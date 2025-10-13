@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { verbs } from "../data/verbs";
 import { useSpeech } from "../hooks/useSpeech";
 import { Check, X, RotateCcw, Star, Trophy } from "./Icons";
+import Fireworks from "./Fireworks";
 
 const pronouns = [
   { text: "je", translation: "I", emoji: "👤" },
@@ -11,7 +12,7 @@ const pronouns = [
   { text: "elles", translation: "they (fem)", emoji: "👩‍👩‍👧" },
 ];
 
-const Level3 = ({ onExit }) => {
+const Level3 = ({ onExit, onComplete }) => {
   const { speak } = useSpeech();
 
   const [sentenceTemplates, setSentenceTemplates] = useState({});
@@ -32,16 +33,24 @@ const Level3 = ({ onExit }) => {
   const [questionStartTime, setQuestionStartTime] = useState(null);
   const [totalTime, setTotalTime] = useState(0);
   const [gameWon, setGameWon] = useState(false);
+  const [showButtons, setShowButtons] = useState(false);
 
   const timerRef = useRef(null);
   const inputRef = useRef(null);
 
-  useEffect(() => {
-    import("../data/verbs").then((mod) => {
-      if (mod.sentenceTemplates) setSentenceTemplates(mod.sentenceTemplates);
-      if (mod.conjugations) setConjugations(mod.conjugations);
-    });
-  }, []);
+useEffect(() => {
+  import("../data/verbs").then((mod) => {
+    if (mod.sentenceTemplates) setSentenceTemplates(mod.sentenceTemplates);
+    if (mod.conjugations) setConjugations(mod.conjugations);
+  });
+}, []);
+
+useEffect(() => {
+  if (gameWon) {
+    const timer = setTimeout(() => setShowButtons(true), 5000);
+    return () => clearTimeout(timer);
+  }
+}, [gameWon]);
 
   const applyElision = (pronoun, form) => {
     if (["je", "me", "te", "le", "la"].includes(pronoun) && /^[aeiouh]/i.test(form))
@@ -129,6 +138,7 @@ if (questionType === "conjugation") {
 
       if (newScore >= 20) {
         setGameWon(true);
+  if (onComplete) setTimeout(() => onComplete(), 5000); // 5 secondes pour voir les feux d'artifice
         return;
       }
 
@@ -163,14 +173,17 @@ if (questionType === "conjugation") {
     return "border-green-500";
   };
 
-  if (gameWon) {
-    const avgTime = total > 0 ? (totalTime / total).toFixed(1) : 0;
-    return (
-      <div className="min-h-screen flex flex-col justify-center items-center bg-gradient-to-br from-orange-50 to-red-50 text-center p-6">
-        <div className="bg-white p-10 rounded-3xl shadow-2xl max-w-lg">
+ if (gameWon) {
+  const avgTime = total > 0 ? (totalTime / total).toFixed(1) : 0;
+  return (
+    <div className="min-h-screen flex flex-col justify-center items-center bg-gradient-to-br from-orange-50 to-red-50 text-center p-6 relative">
+      <Fireworks />
+      <div className="bg-white p-10 rounded-3xl shadow-2xl max-w-lg relative z-10">
           <Trophy size={80} className="text-yellow-500 mx-auto mb-4" />
           <div className="text-6xl mb-4 animate-bounce">🔥</div>
           <h1 className="text-5xl font-bold text-orange-600 mb-4">Speed Champion!</h1>
+<p className="text-2xl text-purple-600 mb-4 animate-pulse">🎆 Enjoy the fireworks! 🎆</p>
+
           <div className="space-y-3 mb-6">
             <p className="text-3xl font-bold text-gray-800">Score: {score}/20</p>
             <p className="text-2xl font-bold text-purple-600">Best Streak: {bestStreak} 🔥</p>

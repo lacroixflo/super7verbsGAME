@@ -78,7 +78,7 @@ const Level2 = ({ onExit, onComplete }) => {
       speak(sentence.fr).then(() => setHasPlayedAudio(true));
 if (score + 1 >= 20) {
   setFeedback("win");
-  setTimeout(() => onComplete?.(), 2000);
+  setTimeout(() => onComplete?.(), 5000);
 }
       else setTimeout(generateQuestion, 2000);
     } else {

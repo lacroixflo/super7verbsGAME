@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { verbs } from "../data/verbs";
 import { useSpeech } from "../hooks/useSpeech";
 import { Check, X, RotateCcw, Star, Volume2, Trophy } from "./Icons";
+import Fireworks from "./Fireworks";
 
 const pronouns = [
   { text: "je", translation: "I", emoji: "👤" },
@@ -77,7 +78,7 @@ const Level1 = ({ onComplete, onExit }) => {
       setScore((s) => s + 1);
       setFeedback("correct");
       speak(sentence.fr);
-      if (score + 1 >= 20) setTimeout(onComplete, 1500);
+      if (score + 1 >= 20) setTimeout(onComplete, 4000);
       else setTimeout(generateQuestion, 2000);
     } else {
       setMistakes((m) => m + 1);
@@ -94,9 +95,10 @@ const Level1 = ({ onComplete, onExit }) => {
     }
   };
 
-  if (score >= 20)
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50 flex justify-center items-center p-6">
+if (score >= 20)
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50 flex justify-center items-center p-6 relative">
+      <Fireworks />
         <div className="bg-white rounded-3xl shadow-2xl p-8 text-center max-w-lg">
           <Trophy className="text-yellow-500 mx-auto mb-4" size={80} />
           <h1 className="text-4xl font-bold text-green-600 mb-4">Level 1 Complete!</h1>

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { verbs } from "../data/verbs";
 import { useSpeech } from "../hooks/useSpeech";
 import { Check, X, RotateCcw, Star, Trophy, AlertCircle } from "./Icons";
+import Fireworks from "./Fireworks";
 
 const pronouns = [
   { text: "je", translation: "I", emoji: "👤" },
@@ -153,14 +154,17 @@ const Level4 = ({ onExit }) => {
   if (feedback === "win") {
     return (
       <div className="min-h-screen flex flex-col justify-center items-center bg-gradient-to-br from-red-50 to-yellow-50 text-center p-6">
+<Fireworks />
         <div className="bg-white p-10 rounded-3xl shadow-2xl max-w-lg">
           <Trophy size={80} className="text-yellow-500 mx-auto mb-4" />
           <div className="text-6xl mb-4">🔍✨</div>
           <h1 className="text-5xl font-bold text-red-600 mb-4">Expert Correcteur!</h1>
+<p className="text-2xl text-purple-600 mb-4 animate-pulse">🎆 Enjoy the fireworks! 🎆</p>
+
           <p className="text-3xl font-bold text-gray-800 mb-2">Score: {score}/20</p>
           <p className="text-xl text-gray-600 mb-2">Précision: {Math.round((score/total)*100)}%</p>
           <p className="text-xl text-gray-700 mb-8">
-            Tu es un vrai détective grammatical! 🕵️
+            You are a true grammar superhero! 🦸
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <button
