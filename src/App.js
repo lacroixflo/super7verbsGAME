@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import Level1 from './components/Level1';
 import Level2 from './components/Level2';
 import Level3 from './components/Level3';
+import Level4 from './components/Level4';
 import { verbs } from './data/verbs';
 import { Check, ArrowRight } from './components/Icons';
 import './App.css';
@@ -10,37 +11,44 @@ function App() {
   const [currentLevel, setCurrentLevel] = useState(null);
   const [level2Unlocked, setLevel2Unlocked] = useState(false);
   const [level3Unlocked, setLevel3Unlocked] = useState(false);
+  const [level4Unlocked, setLevel4Unlocked] = useState(false);
 
   const startLevel1 = () => setCurrentLevel(1);
   const startLevel2 = () => setCurrentLevel(2);
   const startLevel3 = () => setCurrentLevel(3);
+  const startLevel4 = () => setCurrentLevel(4);
   const reset = () => setCurrentLevel(null);
   
-  const unlockLevel2 = () => {
-    setLevel2Unlocked(true);
-    setCurrentLevel(null);
-  };
+const unlockLevel2 = () => {
+  setLevel2Unlocked(true);
+  setCurrentLevel(null);
+};
 
-  const unlockLevel3 = () => {
-    setLevel3Unlocked(true);
-    setCurrentLevel(null);
-  };
+const unlockLevel3And4 = () => {
+  setLevel3Unlocked(true);
+  setLevel4Unlocked(true);
+  setCurrentLevel(null);
+};
 
   if (currentLevel === 1) {
     return <Level1 onComplete={unlockLevel2} onExit={reset} />;
   }
 
-  if (currentLevel === 2) {
-    return <Level2 onComplete={unlockLevel3} onExit={reset} />;
-  }
+if (currentLevel === 2) {
+  return <Level2 onComplete={unlockLevel3And4} onExit={reset} />;
+}
 
-  if (currentLevel === 3) {
-    return <Level3 onExit={reset} />;
+if (currentLevel === 3) {
+  return <Level3 onExit={reset} />;
+}
+
+  if (currentLevel === 4) {
+    return <Level4 onExit={reset} />;
   }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50 p-8">
-      <div className="max-w-4xl mx-auto">
+      <div className="max-w-6xl mx-auto">
         <div className="bg-white rounded-3xl shadow-2xl p-12 text-center">
           <h1 className="text-6xl font-bold text-purple-600 mb-4">
             🇫🇷 Super 7 Verbs
@@ -49,7 +57,7 @@ function App() {
             Master the most important French verbs!
           </p>
 
-          <div className="grid md:grid-cols-3 gap-6 mb-8">
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
             {/* Level 1 */}
             <button
               onClick={startLevel1}
@@ -115,8 +123,7 @@ function App() {
                   <div className="text-center text-white p-4">
                     <div className="text-5xl mb-2">🔒</div>
                     <p className="text-lg font-bold">Locked!</p>
-                    <p className="text-sm">Complete Level 2 first</p>
-                  </div>
+		<p className="text-sm">Complete Level 2 to unlock!</p>                  </div>
                 </div>
               )}
               <button
@@ -139,6 +146,46 @@ function App() {
                   {level3Unlocked ? (
                     <>
                       Start Level 3
+                      <ArrowRight size={20} />
+                    </>
+                  ) : (
+                    'Locked'
+                  )}
+                </div>
+              </button>
+            </div>
+
+            {/* Level 4 */}
+            <div className="relative">
+              {!level4Unlocked && (
+                <div className="absolute inset-0 bg-gray-900 bg-opacity-60 rounded-2xl flex items-center justify-center z-10">
+                  <div className="text-center text-white p-4">
+                    <div className="text-5xl mb-2">🔒</div>
+                    <p className="text-lg font-bold">Locked!</p>
+                    <p className="text-sm">Complete Level 2 to unlock!</p>
+                  </div>
+                </div>
+              )}
+              <button
+                onClick={startLevel4}
+                disabled={!level4Unlocked}
+                className={`bg-gradient-to-br from-red-100 to-yellow-100 rounded-2xl p-6 hover:shadow-lg transition text-left w-full ${
+                  !level4Unlocked ? 'opacity-50' : ''
+                }`}
+              >
+                <div className="text-5xl mb-4">🔍</div>
+                <h2 className="text-2xl font-bold text-gray-800 mb-3">
+                  Level 4: Error Correction
+                </h2>
+                <p className="text-gray-600 mb-4">
+                  Find and fix the mistakes! Detective mode!
+                </p>
+                <div className={`flex items-center justify-center gap-2 ${
+                  level4Unlocked ? 'bg-red-500 hover:bg-red-600' : 'bg-gray-400'
+                } text-white px-6 py-3 rounded-xl transition text-lg font-bold`}>
+                  {level4Unlocked ? (
+                    <>
+                      Start Level 4
                       <ArrowRight size={20} />
                     </>
                   ) : (
@@ -171,6 +218,12 @@ function App() {
                 <span className="text-orange-600 font-semibold flex items-center justify-center gap-2">
                   <Check size={20} />
                   Level 3 Unlocked! ⚡
+                </span>
+              )}
+              {level4Unlocked && (
+                <span className="text-red-600 font-semibold flex items-center justify-center gap-2">
+                  <Check size={20} />
+                  Level 4 Unlocked! 🔍
                 </span>
               )}
             </div>
