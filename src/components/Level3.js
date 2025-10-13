@@ -108,10 +108,9 @@ const Level3 = ({ onExit }) => {
     const timeTaken = (Date.now() - questionStartTime) / 1000;
     setTotalTime((t) => t + timeTaken);
 
-  let correct;
+ let correct;
 if (questionType === "conjugation") {
-  // Accept just the verb form without the pronoun
-  correct = conjugations[currentVerb][currentPronoun].form;
+  correct = applyElision(currentPronoun, conjugations[currentVerb][currentPronoun].form);
 } else if (questionType === "translate-to-french") {
   correct = sentence.fr;
 } else {
@@ -241,7 +240,7 @@ if (questionType === "conjugation") {
         </div>
 
         <div className="bg-gradient-to-r from-orange-500 to-red-500 rounded-2xl p-6 text-white text-center mb-6">
-         {questionType === "conjugation" && (
+  {questionType === "conjugation" && (
   <>
     <p className="text-3xl font-bold mb-3">⚡ CONJUGATE ⚡</p>
     <p className="text-5xl font-bold mb-3">{currentVerb}</p>
@@ -249,7 +248,7 @@ if (questionType === "conjugation") {
       with {currentPronoun} ({currentPronounData?.translation})
     </p>
     <p className="text-base bg-white/20 inline-block py-1 px-3 rounded-lg mt-2">
-      Type only the verb (no pronoun)
+      Write pronoun + verb
     </p>
   </>
 )}
