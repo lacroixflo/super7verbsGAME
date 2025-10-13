@@ -108,14 +108,15 @@ const Level3 = ({ onExit }) => {
     const timeTaken = (Date.now() - questionStartTime) / 1000;
     setTotalTime((t) => t + timeTaken);
 
-    let correct;
-    if (questionType === "conjugation") {
-      correct = applyElision(currentPronoun, conjugations[currentVerb][currentPronoun].form);
-    } else if (questionType === "translate-to-french") {
-      correct = sentence.fr;
-    } else {
-      correct = sentence.en;
-    }
+  let correct;
+if (questionType === "conjugation") {
+  // Accept just the verb form without the pronoun
+  correct = conjugations[currentVerb][currentPronoun].form;
+} else if (questionType === "translate-to-french") {
+  correct = sentence.fr;
+} else {
+  correct = sentence.en;
+}
 
     setTotal((t) => t + 1);
 
@@ -240,20 +241,23 @@ const Level3 = ({ onExit }) => {
         </div>
 
         <div className="bg-gradient-to-r from-orange-500 to-red-500 rounded-2xl p-6 text-white text-center mb-6">
-          {questionType === "conjugation" && (
-            <>
-              <p className="text-lg mb-2">⚡ Quick! Conjugate:</p>
-              <p className="text-4xl font-bold">{currentVerb}</p>
-              <p className="text-lg opacity-90 mb-2">
-                with {currentPronoun} ({currentPronounData?.translation})
-              </p>
-            </>
-          )}
+         {questionType === "conjugation" && (
+  <>
+    <p className="text-3xl font-bold mb-3">⚡ CONJUGATE ⚡</p>
+    <p className="text-5xl font-bold mb-3">{currentVerb}</p>
+    <p className="text-2xl opacity-90 mb-2">
+      with {currentPronoun} ({currentPronounData?.translation})
+    </p>
+    <p className="text-base bg-white/20 inline-block py-1 px-3 rounded-lg mt-2">
+      Type only the verb (no pronoun)
+    </p>
+  </>
+)}
           {questionType === "translate-to-french" && (
-            <>
-              <div className="text-5xl mb-3">🇬🇧 ➡️ 🇫🇷</div>
-              <p className="text-xl mb-2">⚡ Translate fast:</p>
-              <p className="text-3xl font-bold">{sentence.en}</p>
+  <>
+    <div className="text-5xl mb-3">🇬🇧 ➡️ 🇫🇷</div>
+    <p className="text-3xl font-bold mb-3">⚡ TRANSLATE TO FRENCH ⚡</p>
+    <p className="text-4xl font-bold">{sentence.en}</p>
               {sentence.gender && (
                 <p className="text-lg mt-3 bg-yellow-400/30 rounded-lg py-2 px-3 inline-block">
                   ({sentence.gender === 'masculine' ? '👨 masculine' : '👩 feminine'})
@@ -262,12 +266,12 @@ const Level3 = ({ onExit }) => {
             </>
           )}
           {questionType === "translate-to-english" && (
-            <>
-              <div className="text-5xl mb-3">🇫🇷 ➡️ 🇬🇧</div>
-              <p className="text-xl mb-2">⚡ Translate fast:</p>
-              <p className="text-3xl font-bold">{sentence.fr}</p>
-            </>
-          )}
+  <>
+    <div className="text-5xl mb-3">🇫🇷 ➡️ 🇬🇧</div>
+    <p className="text-3xl font-bold mb-3">⚡ TRANSLATE TO ENGLISH ⚡</p>
+    <p className="text-4xl font-bold">{sentence.fr}</p>
+  </>
+)}
         </div>
 
         {feedback === "" && isAnswering && (
