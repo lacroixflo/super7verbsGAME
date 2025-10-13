@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/super7verbsGAME/static/css/main.90fd7d9e.css",
-    "main.js": "/super7verbsGAME/static/js/main.e94e167c.js",
+    "main.css": "/super7verbsGAME/static/css/main.bd3986e5.css",
+    "main.js": "/super7verbsGAME/static/js/main.20537335.js",
     "static/js/453.22991e82.chunk.js": "/super7verbsGAME/static/js/453.22991e82.chunk.js",
     "index.html": "/super7verbsGAME/index.html",
-    "main.90fd7d9e.css.map": "/super7verbsGAME/static/css/main.90fd7d9e.css.map",
-    "main.e94e167c.js.map": "/super7verbsGAME/static/js/main.e94e167c.js.map",
+    "main.bd3986e5.css.map": "/super7verbsGAME/static/css/main.bd3986e5.css.map",
+    "main.20537335.js.map": "/super7verbsGAME/static/js/main.20537335.js.map",
     "453.22991e82.chunk.js.map": "/super7verbsGAME/static/js/453.22991e82.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.90fd7d9e.css",
-    "static/js/main.e94e167c.js"
+    "static/css/main.bd3986e5.css",
+    "static/js/main.20537335.js"
   ]
 }
