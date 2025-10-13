@@ -47,12 +47,19 @@ const Level1 = ({ onComplete, onExit }) => {
     const correctAnswer = isFromFrench ? sentenceData.en : sentenceData.fr;
 
     // Collect all possible answers for distractors
-    const allAnswers = Object.values(sentenceTemplates)
-      .flatMap((v) => Object.values(v))
-      .map((s) => (isFromFrench ? s.en : s.fr));
-    const options = [correctAnswer, ...allAnswers.sort(() => 0.5 - Math.random()).slice(0, 2)].sort(
-      () => 0.5 - Math.random()
-    );
+const allAnswers = Object.values(sentenceTemplates)
+  .flatMap((v) => Object.values(v))
+  .map((s) => (isFromFrench ? s.en : s.fr));
+
+// Remove duplicates and the correct answer
+const uniqueAnswers = [...new Set(allAnswers)].filter(a => a !== correctAnswer);
+
+// Pick 2 random wrong answers
+const shuffled = uniqueAnswers.sort(() => 0.5 - Math.random());
+const wrongAnswers = shuffled.slice(0, 2);
+
+// Combine and shuffle
+const options = [correctAnswer, ...wrongAnswers].sort(() => 0.5 - Math.random());
 
     setSentence({ ...sentenceData, question, isFromFrench });
     setMultipleChoiceOptions(options);
