@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/test2/static/css/main.90fd7d9e.css",
-    "main.js": "/test2/static/js/main.868e2b24.js",
-    "static/js/453.22991e82.chunk.js": "/test2/static/js/453.22991e82.chunk.js",
-    "index.html": "/test2/index.html",
-    "main.90fd7d9e.css.map": "/test2/static/css/main.90fd7d9e.css.map",
-    "main.868e2b24.js.map": "/test2/static/js/main.868e2b24.js.map",
-    "453.22991e82.chunk.js.map": "/test2/static/js/453.22991e82.chunk.js.map"
+    "main.css": "/super7verbsGAME/static/css/main.90fd7d9e.css",
+    "main.js": "/super7verbsGAME/static/js/main.75ae2608.js",
+    "static/js/453.22991e82.chunk.js": "/super7verbsGAME/static/js/453.22991e82.chunk.js",
+    "index.html": "/super7verbsGAME/index.html",
+    "main.90fd7d9e.css.map": "/super7verbsGAME/static/css/main.90fd7d9e.css.map",
+    "main.75ae2608.js.map": "/super7verbsGAME/static/js/main.75ae2608.js.map",
+    "453.22991e82.chunk.js.map": "/super7verbsGAME/static/js/453.22991e82.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.90fd7d9e.css",
-    "static/js/main.868e2b24.js"
+    "static/js/main.75ae2608.js"
   ]
 }
