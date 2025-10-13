@@ -12,7 +12,7 @@ const pronouns = [
   { text: "elles", translation: "they (fem)", emoji: "👩‍👩‍👧" },
 ];
 
-const Level2 = ({ onExit }) => {
+const Level2 = ({ onExit, onComplete }) => {
   const { speak } = useSpeech();
 
   const [sentenceTemplates, setSentenceTemplates] = useState({});
@@ -76,7 +76,10 @@ const Level2 = ({ onExit }) => {
       setScore((s) => s + 1);
       setFeedback("correct");
       speak(sentence.fr).then(() => setHasPlayedAudio(true));
-      if (score + 1 >= 20) setFeedback("win");
+if (score + 1 >= 20) {
+  setFeedback("win");
+  setTimeout(() => onComplete?.(), 2000);
+}
       else setTimeout(generateQuestion, 2000);
     } else {
       setFeedback("incorrect");
@@ -99,29 +102,42 @@ const Level2 = ({ onExit }) => {
   };
 
   if (feedback === "win")
-    return (
-      <div className="min-h-screen flex flex-col justify-center items-center bg-gradient-to-br from-blue-50 to-purple-50 text-center p-6">
-        <div className="bg-white p-10 rounded-3xl shadow-2xl">
-          <div className="text-6xl mb-4">🎉</div>
-          <h1 className="text-5xl font-bold text-purple-600 mb-4">Bravo!</h1>
-          <p className="text-2xl text-gray-700 mb-8">
-            You mastered all 20 questions! 🏆
-          </p>
+  return (
+    <div className="min-h-screen flex flex-col justify-center items-center bg-gradient-to-br from-blue-50 to-purple-50 text-center p-6">
+      <div className="bg-white p-10 rounded-3xl shadow-2xl">
+        <div className="text-6xl mb-4">🎉</div>
+        <h1 className="text-5xl font-bold text-purple-600 mb-4">Bravo!</h1>
+        <p className="text-2xl text-gray-700 mb-8">
+          You mastered all 20 questions! 🏆
+        </p>
+        <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <button
-            onClick={generateQuestion}
+            onClick={() => {
+              setScore(0);
+              setTotal(0);
+              setFeedback("");
+              generateQuestion();
+            }}
             className="bg-gradient-to-r from-purple-500 to-blue-500 text-white text-xl font-bold py-3 px-6 rounded-xl hover:from-purple-600 hover:to-blue-600 transition"
           >
-            Play Again
+            Play Again 🔄
+          </button>
+          <button
+            onClick={onComplete}
+            className="bg-orange-500 text-white text-xl font-bold py-3 px-6 rounded-xl hover:bg-orange-600 transition"
+          >
+            Continue to Level 3 ⚡
           </button>
           <button
             onClick={onExit}
-            className="ml-4 bg-gray-500 text-white text-xl font-bold py-3 px-6 rounded-xl hover:bg-gray-600 transition"
+            className="bg-gray-500 text-white text-xl font-bold py-3 px-6 rounded-xl hover:bg-gray-600 transition"
           >
             Menu
           </button>
         </div>
       </div>
-    );
+    </div>
+  );
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50 p-6">

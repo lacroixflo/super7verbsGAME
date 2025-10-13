@@ -1,19 +1,28 @@
 import React, { useState } from 'react';
 import Level1 from './components/Level1';
 import Level2 from './components/Level2';
+import Level3 from './components/Level3';
 import { verbs } from './data/verbs';
 import { Check, ArrowRight } from './components/Icons';
 import './App.css';
 
 function App() {
   const [currentLevel, setCurrentLevel] = useState(null);
-  const [level2Unlocked, setLevel2Unlocked] = useState(false);
+  const [level2Unlocked, setLevel2Unlocked] = useState(true);
+  const [level3Unlocked, setLevel3Unlocked] = useState(true);
 
   const startLevel1 = () => setCurrentLevel(1);
   const startLevel2 = () => setCurrentLevel(2);
+  const startLevel3 = () => setCurrentLevel(3);
   const reset = () => setCurrentLevel(null);
+  
   const unlockLevel2 = () => {
     setLevel2Unlocked(true);
+    setCurrentLevel(null);
+  };
+
+  const unlockLevel3 = () => {
+    setLevel3Unlocked(true);
     setCurrentLevel(null);
   };
 
@@ -22,7 +31,11 @@ function App() {
   }
 
   if (currentLevel === 2) {
-    return <Level2 onExit={reset} />;
+    return <Level2 onComplete={unlockLevel3} onExit={reset} />;
+  }
+
+  if (currentLevel === 3) {
+    return <Level3 onExit={reset} />;
   }
 
   return (
@@ -36,7 +49,8 @@ function App() {
             Master the most important French verbs!
           </p>
 
-          <div className="grid md:grid-cols-2 gap-6 mb-8">
+          <div className="grid md:grid-cols-3 gap-6 mb-8">
+            {/* Level 1 */}
             <button
               onClick={startLevel1}
               className="bg-gradient-to-br from-green-100 to-blue-100 rounded-2xl p-6 hover:shadow-lg transition text-left"
@@ -54,6 +68,7 @@ function App() {
               </div>
             </button>
 
+            {/* Level 2 */}
             <div className="relative">
               {!level2Unlocked && (
                 <div className="absolute inset-0 bg-gray-900 bg-opacity-60 rounded-2xl flex items-center justify-center z-10">
@@ -92,6 +107,46 @@ function App() {
                 </div>
               </button>
             </div>
+
+            {/* Level 3 */}
+            <div className="relative">
+              {!level3Unlocked && (
+                <div className="absolute inset-0 bg-gray-900 bg-opacity-60 rounded-2xl flex items-center justify-center z-10">
+                  <div className="text-center text-white p-4">
+                    <div className="text-5xl mb-2">🔒</div>
+                    <p className="text-lg font-bold">Locked!</p>
+                    <p className="text-sm">Complete Level 2 first</p>
+                  </div>
+                </div>
+              )}
+              <button
+                onClick={startLevel3}
+                disabled={!level3Unlocked}
+                className={`bg-gradient-to-br from-orange-100 to-red-100 rounded-2xl p-6 hover:shadow-lg transition text-left w-full ${
+                  !level3Unlocked ? 'opacity-50' : ''
+                }`}
+              >
+                <div className="text-5xl mb-4">⚡</div>
+                <h2 className="text-2xl font-bold text-gray-800 mb-3">
+                  Level 3: Speed Round
+                </h2>
+                <p className="text-gray-600 mb-4">
+                  Race against time! 10 seconds per question!
+                </p>
+                <div className={`flex items-center justify-center gap-2 ${
+                  level3Unlocked ? 'bg-orange-500 hover:bg-orange-600' : 'bg-gray-400'
+                } text-white px-6 py-3 rounded-xl transition text-lg font-bold`}>
+                  {level3Unlocked ? (
+                    <>
+                      Start Level 3
+                      <ArrowRight size={20} />
+                    </>
+                  ) : (
+                    'Locked'
+                  )}
+                </div>
+              </button>
+            </div>
           </div>
 
           <div className="bg-gray-50 rounded-2xl p-6">
@@ -105,14 +160,20 @@ function App() {
                 </div>
               ))}
             </div>
-            {level2Unlocked && (
-              <div className="mt-4 text-center">
+            <div className="mt-4 text-center space-y-2">
+              {level2Unlocked && (
                 <span className="text-green-600 font-semibold flex items-center justify-center gap-2">
                   <Check size={20} />
                   Level 2 Unlocked!
                 </span>
-              </div>
-            )}
+              )}
+              {level3Unlocked && (
+                <span className="text-orange-600 font-semibold flex items-center justify-center gap-2">
+                  <Check size={20} />
+                  Level 3 Unlocked! ⚡
+                </span>
+              )}
+            </div>
           </div>
         </div>
       </div>
