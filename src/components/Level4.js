@@ -25,6 +25,7 @@ const Level4 = ({ onExit }) => {
   const [score, setScore] = useState(0);
   const [total, setTotal] = useState(0);
   const [showHint, setShowHint] = useState(false);
+  const [correctionAnswer, setCorrectionAnswer] = useState("");
 
   useEffect(() => {
     import("../data/verbs").then((mod) => {
@@ -44,11 +45,7 @@ const Level4 = ({ onExit }) => {
     const randomVerb = verbsList[Math.floor(Math.random() * verbsList.length)];
     const correctPronoun = pronouns[Math.floor(Math.random() * pronouns.length)];
     
-    const errorTypes = [
-      "wrong_verb_form",
-      "missing_elision"
-    ];
-    
+    const errorTypes = ["wrong_verb_form", "missing_elision"];
     const chosenError = errorTypes[Math.floor(Math.random() * errorTypes.length)];
     setErrorType(chosenError);
     
@@ -63,22 +60,17 @@ const Level4 = ({ onExit }) => {
     
     switch (chosenError) {
       case "wrong_verb_form":
-        // IMPORTANT: Garde le même pronom, change seulement le verbe
-        // Évite les confusions entre ils/elles et il/elle
         let wrongPronounForVerb;
         
         if (correctPronoun.text === "ils" || correctPronoun.text === "elles") {
-          // Si c'est pluriel, utilise un verbe singulier (il ou elle)
           wrongPronounForVerb = pronouns.filter(p => p.text === "il" || p.text === "elle")[
             Math.floor(Math.random() * 2)
           ];
         } else if (correctPronoun.text === "il" || correctPronoun.text === "elle") {
-          // Si c'est singulier, utilise un verbe pluriel (ils ou elles)
           wrongPronounForVerb = pronouns.filter(p => p.text === "ils" || p.text === "elles")[
             Math.floor(Math.random() * 2)
           ];
         } else {
-          // Pour "je", utilise n'importe quel autre
           wrongPronounForVerb = pronouns.filter(p => p.text !== correctPronoun.text)[
             Math.floor(Math.random() * 4)
           ];
@@ -89,11 +81,9 @@ const Level4 = ({ onExit }) => {
         break;
         
       case "missing_elision":
-        // Seulement pour "je" avec voyelle
         if (correctPronoun.text === "je" && /^[aeiouh]/i.test(conjugations[verbs[randomVerb].infinitive]["je"].form)) {
           wrongSentence = "je " + conjugations[verbs[randomVerb].infinitive]["je"].form;
         } else {
-          // Fallback: mauvaise conjugaison
           let fallbackWrong;
           if (correctPronoun.text === "ils" || correctPronoun.text === "elles") {
             fallbackWrong = pronouns.filter(p => p.text === "il" || p.text === "elle")[0];
@@ -114,6 +104,7 @@ const Level4 = ({ onExit }) => {
     
     setIncorrectSentence(wrongSentence);
     setUserAnswer("");
+    setCorrectionAnswer("");
     setFeedback("");
     setShowHint(false);
   };
@@ -139,28 +130,27 @@ const Level4 = ({ onExit }) => {
       }
     } else {
       setFeedback("incorrect");
-      setTimeout(generateWrongSentence, 3000);
+      setCorrectionAnswer("");
     }
   };
 
- const getHint = () => {
-  const hints = {
-    "wrong_verb_form": "💡 The verb is not conjugated correctly for this pronoun",
-    "missing_elision": "💡 Don't forget the elision! (j', t', l'...)"
+  const getHint = () => {
+    const hints = {
+      "wrong_verb_form": "💡 The verb is not conjugated correctly for this pronoun",
+      "missing_elision": "💡 Don't forget the elision! (j', t', l'...)"
+    };
+    return hints[errorType] || "💡 There's an error somewhere...";
   };
-  return hints[errorType] || "💡 There's an error somewhere...";
-};
 
   if (feedback === "win") {
     return (
       <div className="min-h-screen flex flex-col justify-center items-center bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-800 text-center p-6 relative">
-<Fireworks />
-        <div className="bg-white p-10 rounded-3xl shadow-2xl max-w-lg">
+        <Fireworks />
+        <div className="bg-white p-10 rounded-3xl shadow-2xl max-w-lg relative z-10">
           <Trophy size={80} className="text-yellow-500 mx-auto mb-4" />
           <div className="text-6xl mb-4">🔍✨</div>
           <h1 className="text-5xl font-bold text-red-600 mb-4">Expert Correcteur!</h1>
-<p className="text-2xl text-purple-600 mb-4 animate-pulse">🎆 Enjoy the fireworks! 🎆</p>
-
+          <p className="text-2xl text-purple-600 mb-4 animate-pulse">🎆 Enjoy the fireworks! 🎆</p>
           <p className="text-3xl font-bold text-gray-800 mb-2">Score: {score}/20</p>
           <p className="text-xl text-gray-600 mb-2">Précision: {Math.round((score/total)*100)}%</p>
           <p className="text-xl text-gray-700 mb-8">
@@ -240,7 +230,7 @@ const Level4 = ({ onExit }) => {
               value={userAnswer}
               onChange={(e) => setUserAnswer(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && checkAnswer()}
-              placeholder="Écris la phrase correcte..."
+              placeholder="Write the correct sentence..."
               className="w-full text-2xl text-center border-4 border-red-300 rounded-xl p-3 mb-4 focus:outline-none focus:border-red-500"
             />
             <button
@@ -248,7 +238,7 @@ const Level4 = ({ onExit }) => {
               disabled={!userAnswer.trim()}
               className="w-full bg-red-500 text-white text-2xl font-bold py-3 rounded-xl hover:bg-red-600 transition disabled:bg-gray-300"
             >
-              Check your answer
+              Check Your Answer
             </button>
           </>
         )}
@@ -266,11 +256,44 @@ const Level4 = ({ onExit }) => {
         {feedback === "incorrect" && (
           <div className="bg-red-100 border-4 border-red-500 rounded-xl p-6 text-center">
             <X size={40} className="text-red-500 mx-auto mb-2" />
-            <p className="text-2xl font-bold text-red-700 mb-2">Pas tout à fait...</p>
-            <p className="text-lg text-gray-700 mb-2">
-              La phrase correcte était:
+            <p className="text-2xl font-bold text-red-700 mb-2">Not quite...</p>
+            <p className="text-lg text-gray-700 mb-3">
+              The correct sentence is:
             </p>
-            <p className="text-xl font-bold text-red-700">{correctSentence}</p>
+            <p className="text-xl font-bold text-red-700 mb-4">{correctSentence}</p>
+            <p className="text-lg text-gray-700 mb-3">
+              Type it correctly to continue:
+            </p>
+            <input
+              type="text"
+              value={correctionAnswer}
+              onChange={(e) => setCorrectionAnswer(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" && correctionAnswer.trim().toLowerCase() === correctSentence.toLowerCase()) {
+                  setFeedback("");
+                  setUserAnswer("");
+                  setCorrectionAnswer("");
+                  generateWrongSentence();
+                }
+              }}
+              placeholder="Type the correct sentence..."
+              className="w-full text-xl text-center border-4 border-red-300 rounded-xl p-3 mb-4 focus:outline-none focus:border-red-500"
+              autoFocus
+            />
+            <button
+              onClick={() => {
+                if (correctionAnswer.trim().toLowerCase() === correctSentence.toLowerCase()) {
+                  setFeedback("");
+                  setUserAnswer("");
+                  setCorrectionAnswer("");
+                  generateWrongSentence();
+                }
+              }}
+              disabled={correctionAnswer.trim().toLowerCase() !== correctSentence.toLowerCase()}
+              className="w-full bg-green-500 text-white text-xl font-bold py-3 rounded-xl hover:bg-green-600 transition disabled:bg-gray-300"
+            >
+              Continue ✓
+            </button>
           </div>
         )}
       </div>
