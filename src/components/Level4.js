@@ -142,13 +142,13 @@ const Level4 = ({ onExit }) => {
     }
   };
 
-  const getHint = () => {
-    const hints = {
-      "wrong_verb_form": "💡 Le verbe n'est pas conjugué correctement pour ce pronom",
-      "missing_elision": "💡 N'oublie pas l'élision! (j', t', l'...)"
-    };
-    return hints[errorType] || "💡 Il y a une erreur quelque part...";
+ const getHint = () => {
+  const hints = {
+    "wrong_verb_form": "💡 The verb is not conjugated correctly for this pronoun",
+    "missing_elision": "💡 Don't forget the elision! (j', t', l'...)"
   };
+  return hints[errorType] || "💡 There's an error somewhere...";
+};
 
   if (feedback === "win") {
     return (
@@ -219,7 +219,7 @@ const Level4 = ({ onExit }) => {
             onClick={() => setShowHint(true)}
             className="w-full mb-4 bg-yellow-100 text-yellow-700 py-2 rounded-lg hover:bg-yellow-200 transition font-semibold"
           >
-            💡 Besoin d'un indice?
+            💡 Need a clue?
           </button>
         )}
 
