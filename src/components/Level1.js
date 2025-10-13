@@ -34,17 +34,22 @@ const Level1 = ({ onComplete, onExit }) => {
     });
   }, []);
 
-// Create a new question
+  // Create a new question
   const generateQuestion = () => {
+    setSelected(null);
+    setFeedback("");
+    
     const verbsList = Object.keys(verbs);
     const vKey = rand(verbsList);
     const p = rand(pronouns);
     const isFromFrench = Math.random() > 0.5;
+
     const sentenceData = sentenceTemplates[verbs[vKey].infinitive]?.[p.text];
     if (!sentenceData) return;
+
     const question = isFromFrench ? sentenceData.fr : sentenceData.en;
     const correctAnswer = isFromFrench ? sentenceData.en : sentenceData.fr;
-    
+
     // Collect all possible answers for distractors
     const allAnswers = Object.values(sentenceTemplates)
       .flatMap((v) => Object.values(v))
@@ -59,12 +64,10 @@ const Level1 = ({ onComplete, onExit }) => {
     
     // Combine and shuffle
     const options = [correctAnswer, ...wrongAnswers].sort(() => 0.5 - Math.random());
-    
+
     setSentence({ ...sentenceData, question, isFromFrench });
     setMultipleChoiceOptions(options);
     setCorrectIndex(options.indexOf(correctAnswer));
-    setSelected(null);
-    setFeedback("");
   };
 
   // Start first question
@@ -78,7 +81,7 @@ const Level1 = ({ onComplete, onExit }) => {
       setScore((s) => s + 1);
       setFeedback("correct");
       speak(sentence.fr);
-      if (score + 1 >= 20) setTimeout(onComplete, 4000);
+      if (score + 1 >= 20) setTimeout(onComplete, 5000);
       else setTimeout(generateQuestion, 2000);
     } else {
       setMistakes((m) => m + 1);
@@ -95,11 +98,11 @@ const Level1 = ({ onComplete, onExit }) => {
     }
   };
 
-if (score >= 20)
-  return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50 flex justify-center items-center p-6 relative">
-      <Fireworks />
-        <div className="bg-white rounded-3xl shadow-2xl p-8 text-center max-w-lg">
+  if (score >= 20)
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-800 flex justify-center items-center p-6 relative">
+        <Fireworks />
+        <div className="bg-white rounded-3xl shadow-2xl p-8 text-center max-w-lg relative z-10">
           <Trophy className="text-yellow-500 mx-auto mb-4" size={80} />
           <h1 className="text-4xl font-bold text-green-600 mb-4">Level 1 Complete!</h1>
           <p className="text-xl text-gray-600 mb-6">You unlocked Level 2 🎉</p>
@@ -130,13 +133,18 @@ if (score >= 20)
 
         {sentence && (
           <>
-            <div className="bg-gradient-to-r from-green-500 to-blue-500 rounded-2xl p-6 text-white text-center mb-6">
-              <div className="text-5xl mb-2">
-                {sentence.isFromFrench ? "🇫🇷 ➡️ 🇬🇧" : "🇬🇧 ➡️ 🇫🇷"}
-              </div>
-              <p className="text-3xl font-bold mb-2">{sentence.question}</p>
-              <div className="text-4xl">{verbs[sentence.fr.split(" ")[1]]?.emoji || "✨"}</div>
-            </div>
+           <div className="bg-gradient-to-r from-green-500 to-blue-500 rounded-2xl p-6 text-white text-center mb-6">
+  <div className="text-5xl mb-2">
+    {sentence.isFromFrench ? "🇫🇷 ➡️ 🇬🇧" : "🇬🇧 ➡️ 🇫🇷"}
+  </div>
+  <p className="text-3xl font-bold mb-2">{sentence.question}</p>
+  {!sentence.isFromFrench && sentence.gender && (
+    <p className="text-lg mt-3 bg-yellow-400/30 rounded-lg py-2 px-3 inline-block">
+      ({sentence.gender === 'masculine' ? '👨 masculine' : '👩 feminine'})
+    </p>
+  )}
+  <div className="text-4xl mt-2">{verbs[sentence.fr.split(" ")[1]]?.emoji || "✨"}</div>
+</div>
 
             {multipleChoiceOptions.map((opt, i) => {
               let style = "w-full p-4 text-left rounded-xl border-2 mb-3 text-xl ";

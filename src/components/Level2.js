@@ -3,6 +3,7 @@ import { verbs } from "../data/verbs";
 import { useSpeech } from "../hooks/useSpeech";
 import { Check, X, RotateCcw, Star, Volume2 } from "./Icons";
 import { Feedback } from "./Feedback";
+import Fireworks from "./Fireworks";
 
 const pronouns = [
   { text: "je", translation: "I", emoji: "👤" },
@@ -103,8 +104,9 @@ if (score + 1 >= 20) {
 
   if (feedback === "win")
   return (
-    <div className="min-h-screen flex flex-col justify-center items-center bg-gradient-to-br from-blue-50 to-purple-50 text-center p-6">
-      <div className="bg-white p-10 rounded-3xl shadow-2xl">
+    <div className="min-h-screen flex flex-col justify-center items-center bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-800 text-center p-6 relative">
+      <Fireworks />
+<div className="bg-white p-10 rounded-3xl shadow-2xl relative z-10">
         <div className="text-6xl mb-4">🎉</div>
         <h1 className="text-5xl font-bold text-purple-600 mb-4">Bravo!</h1>
         <p className="text-2xl text-gray-700 mb-8">
@@ -169,12 +171,17 @@ if (score + 1 >= 20) {
             </>
           )}
           {questionType === "translate-to-french" && (
-            <>
-              <div className="text-5xl mb-3">🇬🇧 ➡️ 🇫🇷</div>
-              <p className="text-xl mb-2">Translate to French:</p>
-              <p className="text-3xl font-bold">{sentence.en}</p>
-            </>
-          )}
+  <>
+    <div className="text-5xl mb-3">🇬🇧 ➡️ 🇫🇷</div>
+    <p className="text-xl mb-2">Translate to French:</p>
+    <p className="text-3xl font-bold">{sentence.en}</p>
+    {sentence.gender && (
+      <p className="text-lg mt-3 bg-yellow-400/30 rounded-lg py-2 px-3 inline-block">
+        ({sentence.gender === 'masculine' ? '👨 masculine' : '👩 feminine'})
+      </p>
+    )}
+  </>
+)}
           {questionType === "translate-to-english" && (
   <>
     <div className="text-5xl mb-3">🇫🇷 ➡️ 🇬🇧</div>

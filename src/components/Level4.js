@@ -153,7 +153,7 @@ const Level4 = ({ onExit }) => {
 
   if (feedback === "win") {
     return (
-      <div className="min-h-screen flex flex-col justify-center items-center bg-gradient-to-br from-red-50 to-yellow-50 text-center p-6">
+      <div className="min-h-screen flex flex-col justify-center items-center bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-800 text-center p-6 relative">
 <Fireworks />
         <div className="bg-white p-10 rounded-3xl shadow-2xl max-w-lg">
           <Trophy size={80} className="text-yellow-500 mx-auto mb-4" />

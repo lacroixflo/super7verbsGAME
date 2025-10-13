@@ -176,7 +176,7 @@ if (questionType === "conjugation") {
  if (gameWon) {
   const avgTime = total > 0 ? (totalTime / total).toFixed(1) : 0;
   return (
-    <div className="min-h-screen flex flex-col justify-center items-center bg-gradient-to-br from-orange-50 to-red-50 text-center p-6 relative">
+    <div className="min-h-screen flex flex-col justify-center items-center bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-800 text-center p-6 relative">
       <Fireworks />
       <div className="bg-white p-10 rounded-3xl shadow-2xl max-w-lg relative z-10">
           <Trophy size={80} className="text-yellow-500 mx-auto mb-4" />
