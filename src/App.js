@@ -8,8 +8,8 @@ import './App.css';
 
 function App() {
   const [currentLevel, setCurrentLevel] = useState(null);
-  const [level2Unlocked, setLevel2Unlocked] = useState(true);
-  const [level3Unlocked, setLevel3Unlocked] = useState(true);
+  const [level2Unlocked, setLevel2Unlocked] = useState(false);
+  const [level3Unlocked, setLevel3Unlocked] = useState(false);
 
   const startLevel1 = () => setCurrentLevel(1);
   const startLevel2 = () => setCurrentLevel(2);
