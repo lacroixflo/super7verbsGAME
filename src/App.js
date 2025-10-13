@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Level1 from './components/Level1';
 import Level2 from './components/Level2';
 import Level3 from './components/Level3';
@@ -9,9 +9,31 @@ import './App.css';
 
 function App() {
   const [currentLevel, setCurrentLevel] = useState(null);
-  const [level2Unlocked, setLevel2Unlocked] = useState(false);
-  const [level3Unlocked, setLevel3Unlocked] = useState(false);
-  const [level4Unlocked, setLevel4Unlocked] = useState(false);
+  const [level2Unlocked, setLevel2Unlocked] = useState(() => {
+    const saved = localStorage.getItem('level2Unlocked');
+    return saved === 'true';
+  });
+  const [level3Unlocked, setLevel3Unlocked] = useState(() => {
+    const saved = localStorage.getItem('level3Unlocked');
+    return saved === 'true';
+  });
+  const [level4Unlocked, setLevel4Unlocked] = useState(() => {
+    const saved = localStorage.getItem('level4Unlocked');
+    return saved === 'true';
+  });
+
+  // Save progress to localStorage
+  useEffect(() => {
+    localStorage.setItem('level2Unlocked', level2Unlocked);
+  }, [level2Unlocked]);
+
+  useEffect(() => {
+    localStorage.setItem('level3Unlocked', level3Unlocked);
+  }, [level3Unlocked]);
+
+  useEffect(() => {
+    localStorage.setItem('level4Unlocked', level4Unlocked);
+  }, [level4Unlocked]);
 
   const startLevel1 = () => setCurrentLevel(1);
   const startLevel2 = () => setCurrentLevel(2);
@@ -19,28 +41,28 @@ function App() {
   const startLevel4 = () => setCurrentLevel(4);
   const reset = () => setCurrentLevel(null);
   
-const unlockLevel2 = () => {
-  setLevel2Unlocked(true);
-  setCurrentLevel(null);
-};
+  const unlockLevel2 = () => {
+    setLevel2Unlocked(true);
+    setCurrentLevel(null);
+  };
 
-const unlockLevel3And4 = () => {
-  setLevel3Unlocked(true);
-  setLevel4Unlocked(true);
-  setCurrentLevel(null);
-};
+  const unlockLevel3And4 = () => {
+    setLevel3Unlocked(true);
+    setLevel4Unlocked(true);
+    setCurrentLevel(null);
+  };
 
   if (currentLevel === 1) {
     return <Level1 onComplete={unlockLevel2} onExit={reset} />;
   }
 
-if (currentLevel === 2) {
-  return <Level2 onComplete={unlockLevel3And4} onExit={reset} />;
-}
+  if (currentLevel === 2) {
+    return <Level2 onComplete={unlockLevel3And4} onExit={reset} />;
+  }
 
-if (currentLevel === 3) {
-  return <Level3 onExit={reset} />;
-}
+  if (currentLevel === 3) {
+    return <Level3 onComplete={() => {}} onExit={reset} />;
+  }
 
   if (currentLevel === 4) {
     return <Level4 onExit={reset} />;
@@ -123,7 +145,8 @@ if (currentLevel === 3) {
                   <div className="text-center text-white p-4">
                     <div className="text-5xl mb-2">🔒</div>
                     <p className="text-lg font-bold">Locked!</p>
-		<p className="text-sm">Complete Level 2 to unlock!</p>                  </div>
+                    <p className="text-sm">Complete Level 2 to unlock!</p>
+                  </div>
                 </div>
               )}
               <button
@@ -226,6 +249,20 @@ if (currentLevel === 3) {
                   Level 4 Unlocked! 🔍
                 </span>
               )}
+            </div>
+            
+            <div className="mt-6 text-center">
+              <button
+                onClick={() => {
+                  localStorage.clear();
+                  setLevel2Unlocked(false);
+                  setLevel3Unlocked(false);
+                  setLevel4Unlocked(false);
+                }}
+                className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition text-sm"
+              >
+                🔄 Reset Progress
+              </button>
             </div>
           </div>
         </div>
