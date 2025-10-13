@@ -81,8 +81,15 @@ const Level1 = ({ onComplete, onExit }) => {
       setScore((s) => s + 1);
       setFeedback("correct");
       speak(sentence.fr);
-      if (score + 1 >= 20) setTimeout(onComplete, 5000);
-      else setTimeout(generateQuestion, 2000);
+      if (score + 1 >= 20) {
+        setTimeout(onComplete, 5000);
+      } else {
+        setTimeout(() => {
+          setSelected(null);
+          setFeedback("");
+          generateQuestion();
+        }, 2000);
+      }
     } else {
       setMistakes((m) => m + 1);
       setFeedback("incorrect");
@@ -92,9 +99,19 @@ const Level1 = ({ onComplete, onExit }) => {
           setScore(0);
           setMistakes(0);
           setFeedback("reset");
-          setTimeout(generateQuestion, 3000);
+          setTimeout(() => {
+            setSelected(null);
+            setFeedback("");
+            generateQuestion();
+          }, 3000);
         }, 2000);
-      } else setTimeout(generateQuestion, 3000);
+      } else {
+        setTimeout(() => {
+          setSelected(null);
+          setFeedback("");
+          generateQuestion();
+        }, 3000);
+      }
     }
   };
 
@@ -133,18 +150,18 @@ const Level1 = ({ onComplete, onExit }) => {
 
         {sentence && (
           <>
-           <div className="bg-gradient-to-r from-green-500 to-blue-500 rounded-2xl p-6 text-white text-center mb-6">
-  <div className="text-5xl mb-2">
-    {sentence.isFromFrench ? "🇫🇷 ➡️ 🇬🇧" : "🇬🇧 ➡️ 🇫🇷"}
-  </div>
-  <p className="text-3xl font-bold mb-2">{sentence.question}</p>
-  {!sentence.isFromFrench && sentence.gender && (
-    <p className="text-lg mt-3 bg-yellow-400/30 rounded-lg py-2 px-3 inline-block">
-      ({sentence.gender === 'masculine' ? '👨 masculine' : '👩 feminine'})
-    </p>
-  )}
-  <div className="text-4xl mt-2">{verbs[sentence.fr.split(" ")[1]]?.emoji || "✨"}</div>
-</div>
+            <div className="bg-gradient-to-r from-green-500 to-blue-500 rounded-2xl p-6 text-white text-center mb-6">
+              <div className="text-5xl mb-2">
+                {sentence.isFromFrench ? "🇫🇷 ➡️ 🇬🇧" : "🇬🇧 ➡️ 🇫🇷"}
+              </div>
+              <p className="text-3xl font-bold mb-2">{sentence.question}</p>
+              {!sentence.isFromFrench && sentence.gender && (
+                <p className="text-lg mt-3 bg-yellow-400/30 rounded-lg py-2 px-3 inline-block">
+                  ({sentence.gender === 'masculine' ? '👨 masculine' : '👩 feminine'})
+                </p>
+              )}
+              <div className="text-4xl mt-2">{verbs[sentence.fr.split(" ")[1]]?.emoji || "✨"}</div>
+            </div>
 
             {multipleChoiceOptions.map((opt, i) => {
               let style = "w-full p-4 text-left rounded-xl border-2 mb-3 text-xl ";
