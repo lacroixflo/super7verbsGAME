@@ -244,7 +244,7 @@ const Level4 = ({ onExit }) => {
               disabled={!userAnswer.trim()}
               className="w-full bg-red-500 text-white text-2xl font-bold py-3 rounded-xl hover:bg-red-600 transition disabled:bg-gray-300"
             >
-              Vérifier la correction
+              Check your answer
             </button>
           </>
         )}
