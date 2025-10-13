@@ -204,13 +204,13 @@ const Level4 = ({ onExit }) => {
 
         <div className="bg-gradient-to-r from-red-500 to-yellow-500 rounded-2xl p-6 text-white text-center mb-6">
           <div className="text-5xl mb-3">🔍</div>
-          <h2 className="text-2xl font-bold mb-3">Trouve et corrige l'erreur!</h2>
+          <h2 className="text-2xl font-bold mb-3">Find and fix the error!</h2>
           <div className="bg-white/20 rounded-xl p-4 mb-4">
             <p className="text-3xl font-bold text-yellow-100">{incorrectSentence}</p>
           </div>
           <div className="flex items-center justify-center gap-2 text-lg">
             <AlertCircle size={20} />
-            <span>Cette phrase contient une erreur</span>
+            <span>Change the conjugation of the verb</span>
           </div>
         </div>
 
