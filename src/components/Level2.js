@@ -176,12 +176,17 @@ if (score + 1 >= 20) {
             </>
           )}
           {questionType === "translate-to-english" && (
-            <>
-              <div className="text-5xl mb-3">🇫🇷 ➡️ 🇬🇧</div>
-              <p className="text-xl mb-2">Translate to English:</p>
-              <p className="text-3xl font-bold">{sentence.fr}</p>
-            </>
-          )}
+  <>
+    <div className="text-5xl mb-3">🇫🇷 ➡️ 🇬🇧</div>
+    <p className="text-xl mb-2">Translate to English:</p>
+    <p className="text-3xl font-bold">{sentence.fr}</p>
+    {sentence.gender && (
+      <p className="text-lg mt-3 bg-yellow-400/30 rounded-lg py-2 px-3 inline-block">
+        ({sentence.gender === 'masculine' ? '👨 masculine' : '👩 feminine'})
+      </p>
+    )}
+  </>
+)}
         </div>
 
         {!showAnswer && feedback === "" && (
